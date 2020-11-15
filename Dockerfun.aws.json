@@ -1,0 +1,36 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "tinder-client",
+            "image": "syc1013/tinder-clone",
+            "hostname": "tinder-clone",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "tinder-server",
+            "image": "syc1013/tinder-server",
+            "hostname": "tinder-server",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "nginx",
+            "image": "syc1013/tinder-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "tinder-client",
+                "tinder-server"
+            ],
+            "memory": 128
+        }
+    ]
+}

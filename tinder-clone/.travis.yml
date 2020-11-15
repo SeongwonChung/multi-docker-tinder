@@ -1,0 +1,22 @@
+language: generic
+sudo: required
+
+services: 
+    - docker
+
+# before_install:
+#     - docker build -t syc1013/tinder-clone -f Dockerfile.dev .
+
+# script: 
+#     - docker run -e CI=true syc1013/tinder-clone npm run test
+deploy:
+    provider: elasticbeanstalk
+    region: "ap-northeast-2"
+    app: "tinder-clone"
+    env: "TinderClone-env"
+    bucket_name: "elasticbeanstalk-ap-northeast-2-359717375080"
+    bucket_path: "tinder-clone"
+    on: 
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

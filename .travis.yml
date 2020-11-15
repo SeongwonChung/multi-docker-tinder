@@ -1,0 +1,29 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+script:
+  - docker build -t syc1013/tinder-clone ./tinder-clone
+  - docker build -t syc1013/tinder-nginx ./nginx
+  - docker build -t syc1013/tinder-server ./tinder-server
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push syc1013/tinder-clone
+  - docker push syc1013/tinder-nginx
+  - docker push syc1013/tinder-server
+
+
+deploy:
+  provider: elasticbeanstalk
+  region: ap-northeast-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-ap-northeast-2-359717375080
+  bucket_path: docker-multi-tinder
+  on: 
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

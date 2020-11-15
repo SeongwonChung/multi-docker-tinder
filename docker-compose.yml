@@ -1,0 +1,35 @@
+version: '3'
+services: 
+    nginx:
+        depends_on: 
+            - tinder-server
+            - tinder-clone
+        restart: always
+        ports: 
+            - '3050:80'
+    tinder-server:
+        build:
+            context: ./tinder-server
+        ports:
+            - "8000:8000"
+        volumes:
+            - /usr/app/node_modules
+            - ./tinder-server:/usr/app
+        environment: 
+            MONGO_PASSWORD=$MONGO_PASSWORD
+    #frontend
+    tinder-clone:
+        build:
+            context: ./tinder-clone
+            dockerfile: Dockerfile.dev #dev 버전 dockerfile 명시
+        ports:
+            - "3000:3000"
+        volumes:
+            - /usr/app/node_modules
+            - ./tinder-clone:/usr/app
+        
+        #windows 에서 react app exit되는 버그 대응
+        stdin_open: true
+        environment: 
+            - CHOKIDAR_USEPOLLING=true
+        
