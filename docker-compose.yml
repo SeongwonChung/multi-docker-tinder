@@ -5,6 +5,9 @@ services:
             - tinder-server
             - tinder-clone
         restart: always
+        build: 
+            dockerfile: Dockerfile.dev
+            context: ./nginx
         ports: 
             - '3050:80'
     tinder-server:
@@ -16,7 +19,7 @@ services:
             - /usr/app/node_modules
             - ./tinder-server:/usr/app
         environment: 
-            MONGO_PASSWORD=$MONGO_PASSWORD
+            - MONGO_PASSWORD=$MONGO_PASSWORD
     #frontend
     tinder-clone:
         build:
